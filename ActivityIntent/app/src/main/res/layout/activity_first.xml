@@ -18,9 +18,25 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start Second Activity"
-        android:id="@+id/button_second_activity"
+        android:text="@string/start_second_activity"
+        android:id="@+id/buttonSecondActivity"
         android:layout_below="@+id/textView"
         android:layout_alignParentStart="true"
         android:layout_marginTop="43dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_dial_activity"
+        android:id="@+id/buttonDialActivity"
+        android:layout_below="@+id/buttonSecondActivity"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_third_activity_with_extra_data"
+        android:id="@+id/buttonThirdActivity"
+        android:layout_below="@+id/buttonDialActivity"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
