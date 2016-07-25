@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Notification</string>
+    <string name="simple_notification">Simple Notification</string>
+    <string name="notif_title">Notification Title</string>
+    <string name="notif_body">Notification Body</string>
+    <string name="action_notification">Notification with Action</string>
+    <string name="button_notification">Notification with Button</string>
+    <string name="long_notification_body">Android 4.1 supports expandable notifications. You can also setup the notification to have an expanded view when pressed which gives additional details. See more about that on the official guide;  There are three styles to be used with the big view: big picture style, big text style, Inbox style. The following code demonstrates the usage of the BigTextStyle() which allows to use up to 256 dp.</string>
+    <string name="expandedview_notification">Notification with Expanded View</string>
+</resources>

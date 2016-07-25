@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Notification</string>
+    <string name="simple_notification">단순 알림 생성</string>
+    <string name="notif_title">알림 제목</string>
+    <string name="notif_body">알림 본문</string>
+    <string name="action_notification">액션 포함 알림 생성</string>
+    <string name="button_notification">버튼 포함 알림 생성</string>
+    <string name="expandedview_notification">확장형 알림 생성</string>
+</resources>
