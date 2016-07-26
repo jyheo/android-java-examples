@@ -44,4 +44,11 @@
         android:layout_below="@+id/textView_price"
         android:layout_alignParentStart="true"
         android:onClick="onLogoutButton" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_below="@+id/button_logout"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
