@@ -29,6 +29,10 @@ public class TitlesFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_titles, container, false);
     }
 
+    public interface OnTitleSelectedListener {
+        public void onTitleSelected(int i, boolean landscapeOnly);
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -41,7 +45,8 @@ public class TitlesFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 mCurCheckPosition = i;
-                ((MainActivity)getActivity()).showDetails(i, false);
+
+                ((OnTitleSelectedListener)getActivity()).onTitleSelected(i, false);
             }
         });
 
@@ -50,7 +55,7 @@ public class TitlesFragment extends Fragment {
         if (savedInstanceState != null) {
             mCurCheckPosition = savedInstanceState.getInt("curChoice", -1);
             if (mCurCheckPosition >= 0)
-                ((MainActivity)getActivity()).showDetails(mCurCheckPosition, true);
+                ((OnTitleSelectedListener)getActivity()).onTitleSelected(mCurCheckPosition, true);
         }
 
         lv.setSelection(mCurCheckPosition);

@@ -21,7 +21,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements TitlesFragment.OnTitleSelectedListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
     }
 
-    public void showDetails(int i, boolean landsacpeOnly) {
+    public void onTitleSelected(int i, boolean landsacpeOnly) {
         if (getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE) {
             DetailsFragment detailsFragment = DetailsFragment.newInstance(i);
