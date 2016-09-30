@@ -26,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.quick_action1:
+                Toast.makeText(getApplicationContext(), R.string.action_quick, Toast.LENGTH_SHORT).show();
+                return true;
             case R.id.action_settings:
                 Toast.makeText(getApplicationContext(), R.string.action_settings, Toast.LENGTH_SHORT).show();
                 return true;
