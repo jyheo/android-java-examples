@@ -4,9 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <fragment
-        android:name="com.jyheo.fragmentexample.TitlesFragment"
-        android:id="@+id/titles"
+    <FrameLayout
+        android:id="@+id/details"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
