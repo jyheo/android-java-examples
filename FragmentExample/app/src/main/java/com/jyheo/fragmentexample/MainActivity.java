@@ -29,13 +29,13 @@ public class MainActivity extends Activity implements TitlesFragment.OnTitleSele
         setContentView(R.layout.activity_main);
     }
 
-    public void onTitleSelected(int i, boolean landsacpeOnly) {
+    public void onTitleSelected(int i, boolean restoreSaved) {
         if (getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE) {
             DetailsFragment detailsFragment = DetailsFragment.newInstance(i);
             getFragmentManager().beginTransaction().replace(R.id.details, detailsFragment).commit();
         } else {
-            if (landsacpeOnly == false) {
+            if (restoreSaved == false) {
                 Intent intent = new Intent(this, DetailsActivity.class);
                 intent.putExtra("index", i);
                 startActivity(intent);

@@ -30,7 +30,7 @@ public class TitlesFragment extends Fragment {
     }
 
     public interface OnTitleSelectedListener {
-        public void onTitleSelected(int i, boolean landscapeOnly);
+        public void onTitleSelected(int i, boolean restoreSaved);
     }
 
     @Override
