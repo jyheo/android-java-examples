@@ -12,10 +12,17 @@
         android:layout_height="wrap_content"
         android:text="Hello World!" />
 
-    <fragment
-        android:name="com.jyheo.fragmentbasic.FirstFragment"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fragment" />
+        android:id="@+id/fragment">
+
+        <fragment
+            android:name="com.jyheo.fragmentbasic.FirstFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </FrameLayout>
+
     
 </LinearLayout>
