@@ -26,12 +26,13 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         // for any view that will be set as you render a row
         public TextView nameTextView;
         public Button messageButton;
+        private ContactsAdapter mContacts;
 
         private Context context;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
-        public ViewHolder(Context context, View itemView) {
+        public ViewHolder(Context context, View itemView, ContactsAdapter contacts) {
             // Stores the itemView in a public final member variable that can be used
             // to access the context from any ViewHolder instance.
             super(itemView);
@@ -40,8 +41,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             messageButton = (Button) itemView.findViewById(R.id.message_button);
 
             this.context = context;
+            this.mContacts = contacts;
 
-            itemView.setOnClickListener(this);
+            messageButton.setOnClickListener(this);
         }
 
         @Override
@@ -49,6 +51,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             int position = getLayoutPosition(); // gets item position
             // We can access the data within the views
             Toast.makeText(context, nameTextView.getText() + Integer.toString(position), Toast.LENGTH_SHORT).show();
+            mContacts.removeItem(position);
+
         }
     }
 
@@ -78,7 +82,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         View contactView = inflater.inflate(R.layout.item_contact, parent, false);
 
         // Return a new holder instance
-        ViewHolder viewHolder = new ViewHolder(context, contactView);
+        ViewHolder viewHolder = new ViewHolder(context, contactView, this);
         return viewHolder;
     }
 
@@ -92,13 +96,19 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         TextView textView = viewHolder.nameTextView;
         textView.setText(contact.getName());
         Button button = viewHolder.messageButton;
-        button.setText("Message");
+        button.setText("Delete");
     }
 
     // Returns the total count of items in the list
     @Override
     public int getItemCount() {
         return mContacts.size();
+    }
+
+    public void removeItem(int p) {
+        mContacts.remove(p);
+        notifyItemRemoved(p);
+
     }
 
 }
