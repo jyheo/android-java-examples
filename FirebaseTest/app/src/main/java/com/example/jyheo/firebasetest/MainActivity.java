@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void displayImage() {
         // Create a storage reference from our app
-        StorageReference storageRef = mFirebaseStorage.getReferenceFromUrl("gs://myfirebase-332e8.appspot.com/3.jpg");
+        StorageReference storageRef = mFirebaseStorage.getReferenceFromUrl("gs://fir-test-30d1c.appspot.com/스크린샷, 2016-11-26 00-41-42.png");
         storageRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
