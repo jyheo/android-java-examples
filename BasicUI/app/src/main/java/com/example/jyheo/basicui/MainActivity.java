@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Button btn = (Button)findViewById(R.id.button1);
-                if (btn.getText().toString() == "Button 1")
+                if (btn.getText().toString().equals("Button 1"))
                     btn.setText("Button One");
                 else
                     btn.setText("Button 1");
