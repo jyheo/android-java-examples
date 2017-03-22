@@ -16,9 +16,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    final int REQUEST_CODE_PERM_CALL_LOG = 1;
-    String[] PERMISSIONS_CALL_LOG = {Manifest.permission.READ_CALL_LOG,
-        Manifest.permission.WRITE_CALL_LOG};
+    final int REQUEST_CODE_PERM_READ_CALL_LOG = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
             updateCallLog();
         } else {
             ActivityCompat.requestPermissions(this,
-                    PERMISSIONS_CALL_LOG, REQUEST_CODE_PERM_CALL_LOG);
+                    new String[]{Manifest.permission.READ_CALL_LOG}, REQUEST_CODE_PERM_READ_CALL_LOG);
         }
 
     }
@@ -55,16 +53,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_CODE_PERM_CALL_LOG) {
-            if (grantResults.length != PERMISSIONS_CALL_LOG.length)
-                return;
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == REQUEST_CODE_PERM_READ_CALL_LOG) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 updateCallLog();
             } else {
                 // permission for READ_CALL_LOG rejected!
-            }
-            if (grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                // permission for WRITE_CALL_LOG was accepted
             }
         }
     }
