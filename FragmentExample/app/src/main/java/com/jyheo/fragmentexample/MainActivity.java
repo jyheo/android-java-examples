@@ -16,22 +16,27 @@ package com.jyheo.fragmentexample;
  * limitations under the License.
  */
 
-import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
-public class MainActivity extends Activity implements TitlesFragment.OnTitleSelectedListener{
+public class MainActivity extends AppCompatActivity implements TitlesFragment.OnTitleSelectedListener{
+
+    boolean mbDetailsVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (findViewById(R.id.details) != null)
+            mbDetailsVisible = true;
+        else
+            mbDetailsVisible = false;
     }
 
     public void onTitleSelected(int i, boolean restoreSaved) {
-        if (getResources().getConfiguration().orientation
-                == Configuration.ORIENTATION_LANDSCAPE) {
+        if (mbDetailsVisible) {
             DetailsFragment detailsFragment = DetailsFragment.newInstance(i);
             getFragmentManager().beginTransaction().replace(R.id.details, detailsFragment).commit();
         } else {
