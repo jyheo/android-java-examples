@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.jyheo.threadex.MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!" />
+
+    <Button
+        android:id="@+id/button_longwait"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onLongWaitClick"
+        android:text="Long Wait" />
+
+    <Button
+        android:id="@+id/button_thread_exception"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onThreadExceptionClick"
+        android:text="Thread - Exception" />
+
+    <Button
+        android:id="@+id/button_thread_handler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onThreadHandlerClick"
+        android:text="Thread - Handler" />
+
+    <Button
+        android:id="@+id/button_thread_runonui"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onThreadRunOnUIClick"
+        android:text="Thread - RunOnUIThread" />
+
+</LinearLayout>
