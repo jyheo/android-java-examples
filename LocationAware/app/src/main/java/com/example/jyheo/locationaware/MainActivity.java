@@ -16,6 +16,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
+
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
     private final static int MIN_TIME = 50;
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     @Override
+    @AfterPermissionGranted(MY_PERMISSIONS_REQUEST_FINE_LOCATION)
     protected void onStart() {
         super.onStart();
         mLocationListener = new LocationListener() {
@@ -64,14 +68,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         //note that LocationManager.NETWORK_PROVIDER will not work on the emulator because mock
         //location data is injected as GPS location data
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+
+        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            // Already have permission, do the thing
+            try {
+                mLm.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST,
+                        mLocationListener);
+            } catch(SecurityException e) {  // just remove warning message!
+            }
         } else {
-            mLm.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST,
-                    mLocationListener);
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions(this, "I need the PERMISSION!",
+                    MY_PERMISSIONS_REQUEST_FINE_LOCATION, perms);
         }
 
         mSm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -85,32 +94,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                    if (ContextCompat.checkSelfPermission(this,
-                            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                        mLm.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST,
-                                mLocationListener);
-                    }
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
-            }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     @Override
