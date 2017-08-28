@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">DebugThisLab</string>
+    <string name="name">이름</string>
+    <string name="phone">전화번호</string>
+</resources>
