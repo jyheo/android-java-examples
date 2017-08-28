@@ -13,23 +13,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
         Button btnOK = (Button)findViewById(R.id.OK);
-
+        setContentView(R.layout.activity_main);
 
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EditText etName = (EditText)findViewById(R.id.Name);
                 EditText etPhone = (EditText)findViewById(R.id.Phone);
-                if (etName.getText().toString().equals("john")) {
+                if (etName.getText().toString() == "john") {
                     Intent intent = new Intent(getApplicationContext(), SecondActivity.class);
                     startActivity(intent);
                 }
             }
         });
-
-
     }
 }

@@ -36,4 +36,18 @@ public class MainActivityTest {
                 .check(matches(withText("Hello")));
 
     }
+
+    @Test
+    public void mainActivityTest2() {
+        onView(allOf(withId(R.id.Name), isDisplayed()))
+                .perform(click())
+                .perform(replaceText("john2"), closeSoftKeyboard());
+
+        onView(allOf(withId(R.id.OK), isDisplayed()))
+                .perform(click());
+
+        onView(withId(R.id.OK))
+                .check(matches(withText("FAILED")));
+
+    }
 }
