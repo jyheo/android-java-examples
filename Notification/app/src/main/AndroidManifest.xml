@@ -15,7 +15,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TempActivity"></activity>
+        <activity
+            android:name=".TempActivity"
+            android:excludeFromRecents="true"
+            android:taskAffinity="">
+        </activity>
+        <activity android:name=".SecondActivity"
+            android:parentActivityName=".MainActivity">
+        </activity>
     </application>
 
 </manifest>
