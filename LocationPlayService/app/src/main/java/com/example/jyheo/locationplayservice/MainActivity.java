@@ -1,8 +1,11 @@
 package com.example.jyheo.locationplayservice;
 
 import android.Manifest;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,10 +15,15 @@ import android.widget.TextView;
 import android.support.design.widget.Snackbar;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,9 +39,13 @@ public class MainActivity extends AppCompatActivity {
     protected String mLongitudeLabel;
     protected TextView mLatitudeText;
     protected TextView mLongitudeText;
+    protected TextView mAddressText;
 
     private FusedLocationProviderClient mFusedLocationClient;
     private static final int RC_LOCATION = 1;
+    private static final int RC_LOCATION_UPDATE = 2;
+
+    protected LocationCallback mLocationCallback;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         mLongitudeLabel = getResources().getString(R.string.longitude_label);
         mLatitudeText = (TextView) findViewById((R.id.latitude_text));
         mLongitudeText = (TextView) findViewById((R.id.longitude_text));
+        mAddressText = (TextView) findViewById(R.id.text_address);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -52,6 +65,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getLastLocation();
+            }
+        });
+        btn = (Button)findViewById(R.id.btn_start_update);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startLocationUpdate();
+            }
+        });
+        btn = (Button)findViewById(R.id.btn_stop_update);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopLocationUpdate();
             }
         });
     }
@@ -63,10 +90,19 @@ public class MainActivity extends AppCompatActivity {
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
+    protected void updateUI() {
+        mLatitudeText.setText(String.format(Locale.ENGLISH, "%s: %f",
+                mLatitudeLabel,
+                mLastLocation.getLatitude()));
+        mLongitudeText.setText(String.format(Locale.ENGLISH, "%s: %f",
+                mLongitudeLabel,
+                mLastLocation.getLongitude()));
+    }
+
     @SuppressWarnings("MissingPermission")
     @AfterPermissionGranted(RC_LOCATION) // automatically re-invoke this method after getting the required permission
     public void getLastLocation() {
-        String[] perms = {Manifest.permission.ACCESS_COARSE_LOCATION};
+        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
         if (EasyPermissions.hasPermissions(this, perms)) {
             mFusedLocationClient.getLastLocation()
                     .addOnCompleteListener(this, new OnCompleteListener<Location>() {
@@ -74,13 +110,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Location> task) {
                             if (task.isSuccessful() && task.getResult() != null) {
                                 mLastLocation = task.getResult();
-
-                                mLatitudeText.setText(String.format(Locale.ENGLISH, "%s: %f",
-                                        mLatitudeLabel,
-                                        mLastLocation.getLatitude()));
-                                mLongitudeText.setText(String.format(Locale.ENGLISH, "%s: %f",
-                                        mLongitudeLabel,
-                                        mLastLocation.getLongitude()));
+                                updateUI();
                             } else {
                                 Log.w(TAG, "getLastLocation:exception", task.getException());
                                 showSnackbar(getString(R.string.no_location_detected));
@@ -92,6 +122,58 @@ public class MainActivity extends AppCompatActivity {
             EasyPermissions.requestPermissions(this,
                     "This app needs access to your location to know where you are.",
                     RC_LOCATION, perms);
+        }
+    }
+
+    @SuppressWarnings("MissingPermission")
+    @AfterPermissionGranted(RC_LOCATION_UPDATE)
+    public void startLocationUpdate() {
+        LocationRequest locRequest = new LocationRequest();
+        locRequest.setInterval(10000);
+        locRequest.setFastestInterval(5000);
+        locRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+
+                mLastLocation = locationResult.getLastLocation();
+                updateUI();
+            }
+        };
+
+
+        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            mFusedLocationClient.requestLocationUpdates(locRequest, mLocationCallback, Looper.myLooper());
+        } else {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions(this,
+                    "This app needs access to your location to know where you are.",
+                    RC_LOCATION_UPDATE, perms);
+        }
+    }
+
+    public void stopLocationUpdate() {
+        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+    }
+
+    public void toAddress(View view) {
+        try {
+            Geocoder geocoder = new Geocoder(this, Locale.KOREA);
+            List<Address> addresses = geocoder.getFromLocation(mLastLocation.getLatitude(),mLastLocation.getLongitude(),1);
+            if (addresses.size() >0) {
+                Address address = addresses.get(0);
+                mAddressText.setText(String.format("\n[%s]\n[%s]\n[%s]\n[%s]",
+                        address.getFeatureName(),
+                        address.getThoroughfare(),
+                        address.getLocality(),
+                        address.getCountryName()
+                ));
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Failed in using Geocoder",e);
         }
     }
 

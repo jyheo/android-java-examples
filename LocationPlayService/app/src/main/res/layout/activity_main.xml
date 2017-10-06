@@ -32,4 +32,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Get Last Location" />
+    <Button
+        android:id="@+id/btn_start_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Location Update"/>
+    <Button
+        android:id="@+id/btn_stop_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop Location Update"/>
+    <Button
+        android:id="@+id/btn_to_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="To Address"
+        android:onClick="toAddress"/>
+    <TextView
+        android:id="@+id/text_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
