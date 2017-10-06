@@ -26,4 +26,10 @@
         android:layout_marginTop="@dimen/text_margin"
         android:textIsSelectable="true"
         android:textSize="@dimen/lat_long_text_size" />
+
+    <Button
+        android:id="@+id/btn_get_last_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Last Location" />
 </LinearLayout>
