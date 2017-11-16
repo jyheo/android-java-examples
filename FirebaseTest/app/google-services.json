@@ -46,6 +46,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1071702779205-u37f78fj2gu4elqtr414u4rjrrcq25pp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jyheo.firebasetest",
+            "certificate_hash": "e7bfc9d45bb55566f80984888801be2f4afa650f"
+          }
+        },
+        {
           "client_id": "1071702779205-42q75uj3tigqbpdk9ighvc7mj7o7vn0c.apps.googleusercontent.com",
           "client_type": 3
         }
