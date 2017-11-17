@@ -1,7 +1,0 @@
-<resources>
-    <string name="app_name">LocationAware</string>
-    <string name="action_settings">Settings</string>
-    <string name="label_accelerometer">Accelerometer data</string>
-    <string name="label_gyroscope">Gyroscope data</string>
-    <string name="label_magnetic_field">Magnetic data</string>
-</resources>
