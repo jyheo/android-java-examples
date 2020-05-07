@@ -1,13 +1,10 @@
-package com.example.jyheo.materialtest;
+package com.example.recyclerview;
 
 import android.graphics.Rect;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-/**
- * Created by jyheo on 2016-07-22.
- */
 public class MarginItemDecoration extends RecyclerView.ItemDecoration {
 
     private final int mVerticalSpaceHeight;

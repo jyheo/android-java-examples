@@ -1,11 +1,6 @@
-package com.example.jyheo.materialtest;
+package com.example.recyclerview;
 
 import java.util.ArrayList;
-
-/**
- * Created by jyheo on 2016-07-22.
- * source: https://guides.codepath.com/android/using-the-recyclerview
- */
 
 public class Contact {
     private String mName;
