@@ -2,7 +2,6 @@ package com.example.recyclerview;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,16 +9,16 @@ import com.example.recyclerview.databinding.ItemBinding;
 
 import java.util.List;
 
-public class EmailAdapter extends RecyclerView.Adapter<EmailAdapter.ViewHolder> {
+class ViewHolder extends RecyclerView.ViewHolder {
+    ItemBinding mBinding;
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        ItemBinding mBinding;
-
-        ViewHolder(ItemBinding binding) {
-            super(binding.getRoot());
-            mBinding = binding;
-        }
+    ViewHolder(ItemBinding binding) {
+        super(binding.getRoot());
+        mBinding = binding;
     }
+}
+
+public class EmailAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     private List<Email> mEmails;
 
