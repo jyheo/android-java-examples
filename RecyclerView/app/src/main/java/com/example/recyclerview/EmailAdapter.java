@@ -22,7 +22,7 @@ public class EmailAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     private List<Email> mEmails;
 
-    EmailAdapter(Context context, List<Email> emails) {
+    EmailAdapter(List<Email> emails) {
         mEmails = emails;
     }
 

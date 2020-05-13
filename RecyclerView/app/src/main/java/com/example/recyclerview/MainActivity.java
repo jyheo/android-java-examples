@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
         makeListOfEmails();
 
-        EmailAdapter adapter = new EmailAdapter(this, mEmails);
+        EmailAdapter adapter = new EmailAdapter(mEmails);
         binding.recyclerview.setAdapter(adapter);
         binding.recyclerview.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerview.setHasFixedSize(true);
