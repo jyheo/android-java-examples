@@ -1,7 +1,9 @@
 package com.example.recyclerview;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +17,14 @@ class ViewHolder extends RecyclerView.ViewHolder {
     ViewHolder(ItemBinding binding) {
         super(binding.getRoot());
         mBinding = binding;
+        mBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i = getAdapterPosition();
+                if (i != RecyclerView.NO_POSITION)
+                    Log.i("RV", String.format("%d %s", i, mBinding.textSender.getText()));
+            }
+        });
     }
 }
 
