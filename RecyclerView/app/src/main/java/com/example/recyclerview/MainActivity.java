@@ -1,46 +1,40 @@
 package com.example.recyclerview;
 
 import android.os.Bundle;
-import android.view.Menu;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.example.recyclerview.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    ArrayList<Contact> contacts;
+    ArrayList<Email> mEmails = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        RecyclerView rvContacts = (RecyclerView) findViewById(R.id.rvContacts);
+        makeListOfEmails();
 
-        contacts = Contact.createContactsList(20);
-        ContactsAdapter adapter = new ContactsAdapter(this, contacts);
-        rvContacts.setAdapter(adapter);
+        EmailAdapter adapter = new EmailAdapter(this, mEmails);
+        binding.recyclerview.setAdapter(adapter);
+        binding.recyclerview.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerview.setHasFixedSize(true);
 
-        // Set layout manager to position the items
-        //rvContacts.setLayoutManager(new LinearLayoutManager(this));
 
-        StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        rvContacts.setLayoutManager(gridLayoutManager);
-
-        RecyclerView.ItemDecoration itemDecoration = new MarginItemDecoration(20);
-        rvContacts.addItemDecoration(itemDecoration);
-
-        // optimizations if all item views are of the same height and width for significantly smoother scrolling:
-        rvContacts.setHasFixedSize(true);
-
-        // Add a new contact
-        contacts.add(0, new Contact("Barney", true));
-        // Notify the adapter that an item was inserted at position 0
+        mEmails.add(0, new Email("Friend", "Hello! Do you have ..."));
         adapter.notifyItemInserted(0);
     }
+
+    private void makeListOfEmails() {
+        String[] names = getResources().getStringArray(R.array.names);
+        for (String name : names)
+            mEmails.add(new Email(name, "Hello, friend. Do you have any idea about ..."));
+        for (String name : names)
+            mEmails.add(new Email(name, "Welcome home, friend. How was your trip?"));
+    }
 }
-
-

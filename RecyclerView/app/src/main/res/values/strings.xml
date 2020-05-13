@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">RecyclerView</string>
+    <string name="person">Person</string>
+    <string name="delete">Delete</string>
 </resources>
