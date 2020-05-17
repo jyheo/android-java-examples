@@ -1,10 +1,10 @@
 package com.jyheo.fragmentbasic;
 
-import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 public class FragSwitchActivity extends AppCompatActivity {
 
@@ -33,7 +33,7 @@ public class FragSwitchActivity extends AppCompatActivity {
     final SecondFragment secondFragment = new SecondFragment();
 
     protected void switchFragment(int id) {
-        final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        final FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (id == 0)
             fragmentTransaction.replace(R.id.fragment, firstFragment);
         else

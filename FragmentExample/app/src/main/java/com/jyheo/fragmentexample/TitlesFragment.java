@@ -2,7 +2,7 @@ package com.jyheo.fragmentexample;
 
 
 import android.os.Bundle;
-import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,62 +10,77 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+import com.jyheo.fragmentexample.databinding.FragmentTitlesBinding;
+
+
 public class TitlesFragment extends Fragment {
 
-    int mCurCheckPosition = -1;
+    private int mCurCheckPosition = -1;
+    private FragmentTitlesBinding binding;
+    private OnTitleSelectedListener mTitleSelectedListener;
 
-    public TitlesFragment() {
-        // Required empty public constructor
-    }
+    public TitlesFragment() { Log.d("TitlesFragment", "constructor"); }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_titles, container, false);
+        binding = FragmentTitlesBinding.inflate(inflater, container, false);
+        Log.d("TitlesFragment", "onCreateView");
+        return binding.getRoot();
     }
 
     public interface OnTitleSelectedListener {
-        public void onTitleSelected(int i, boolean restoreSaved);
+        void onTitleSelected(int i, boolean restoreSaved);
+    }
+
+    void setOnTitleSelectedListener(OnTitleSelectedListener listener) {
+        mTitleSelectedListener = listener;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ListView lv = (ListView)getView().findViewById(R.id.listview);
+        Log.d("TitlesFragment", "onActivityCreated");
 
-        lv.setAdapter(new ArrayAdapter<String>(getActivity(),
+        binding.listview.setAdapter(new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_list_item_activated_1, Shakespeare.TITLES));
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        binding.listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 mCurCheckPosition = i;
-
-                ((OnTitleSelectedListener)getActivity()).onTitleSelected(i, false);
+                if (mTitleSelectedListener != null)
+                    mTitleSelectedListener.onTitleSelected(i, false);
             }
         });
 
-        lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        binding.listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         if (savedInstanceState != null) {
             mCurCheckPosition = savedInstanceState.getInt("curChoice", -1);
-            if (mCurCheckPosition >= 0)
-                ((OnTitleSelectedListener)getActivity()).onTitleSelected(mCurCheckPosition, true);
+            Log.d("TitlesFragment", String.format("savedInstanceState!=null %d", mCurCheckPosition));
         }
 
-        lv.setSelection(mCurCheckPosition);
-        lv.smoothScrollToPosition(mCurCheckPosition);
+        binding.listview.setSelection(mCurCheckPosition);
+        binding.listview.smoothScrollToPosition(mCurCheckPosition);
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onStart() {
+        super.onStart();
+        Log.d("TitlesFragment", String.format("onStart %d", mCurCheckPosition));
+        if (mCurCheckPosition >= 0 && mTitleSelectedListener != null)
+            mTitleSelectedListener.onTitleSelected(mCurCheckPosition, true);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("curChoice", mCurCheckPosition);
+        Log.d("TitlesFragment", String.format("onSaveInstanceState %d", mCurCheckPosition));
     }
 
 }
