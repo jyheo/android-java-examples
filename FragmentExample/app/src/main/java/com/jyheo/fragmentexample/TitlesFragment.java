@@ -22,13 +22,12 @@ public class TitlesFragment extends Fragment {
     private FragmentTitlesBinding binding;
     private OnTitleSelectedListener mTitleSelectedListener;
 
-    public TitlesFragment() { Log.d("TitlesFragment", "constructor"); }
+    public TitlesFragment() { }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentTitlesBinding.inflate(inflater, container, false);
-        Log.d("TitlesFragment", "onCreateView");
         return binding.getRoot();
     }
 
@@ -44,8 +43,6 @@ public class TitlesFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Log.d("TitlesFragment", "onActivityCreated");
-
         binding.listview.setAdapter(new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_list_item_activated_1, Shakespeare.TITLES));
         binding.listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -59,10 +56,8 @@ public class TitlesFragment extends Fragment {
 
         binding.listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null)
             mCurCheckPosition = savedInstanceState.getInt("curChoice", -1);
-            Log.d("TitlesFragment", String.format("savedInstanceState!=null %d", mCurCheckPosition));
-        }
 
         binding.listview.setSelection(mCurCheckPosition);
         binding.listview.smoothScrollToPosition(mCurCheckPosition);
@@ -71,7 +66,6 @@ public class TitlesFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.d("TitlesFragment", String.format("onStart %d", mCurCheckPosition));
         if (mCurCheckPosition >= 0 && mTitleSelectedListener != null)
             mTitleSelectedListener.onTitleSelected(mCurCheckPosition, true);
     }
@@ -80,7 +74,5 @@ public class TitlesFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("curChoice", mCurCheckPosition);
-        Log.d("TitlesFragment", String.format("onSaveInstanceState %d", mCurCheckPosition));
     }
-
 }
