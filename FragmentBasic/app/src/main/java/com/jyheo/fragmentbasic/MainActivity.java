@@ -15,11 +15,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        final FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment, new SecondFragment());
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
     }
 
     @Override
@@ -28,12 +23,18 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    void switchFragment() {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment, new SecondFragment());
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.frag_switch:
-                Intent intent = new Intent(this, FragSwitchActivity.class);
-                startActivity(intent);
+                switchFragment();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
