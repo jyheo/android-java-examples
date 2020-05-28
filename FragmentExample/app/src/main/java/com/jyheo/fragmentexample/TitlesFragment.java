@@ -28,12 +28,6 @@ public class TitlesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentTitlesBinding.inflate(inflater, container, false);
-        return binding.getRoot();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
 
         model = new ViewModelProvider(requireActivity()).get(MyViewModel.class);
 
@@ -45,14 +39,8 @@ public class TitlesFragment extends Fragment {
                 model.select(i);
             }
         });
-
         binding.listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        Integer selected = model.getSelected().getValue();
-        if (selected != null) {
-            binding.listview.setSelection(selected);
-            binding.listview.smoothScrollToPosition(selected);
-        }
+        return binding.getRoot();
     }
-
 }
