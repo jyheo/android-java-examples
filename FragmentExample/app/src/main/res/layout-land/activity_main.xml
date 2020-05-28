@@ -4,17 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:name="com.jyheo.fragmentexample.TitlesFragment"
         android:id="@+id/titles"
         android:layout_weight="1"
-        android:layout_width="0px"
+        android:layout_width="0dp"
         android:layout_height="match_parent" />
 
-    <FrameLayout
+    <View
+        android:layout_width="5dp"
+        android:layout_height="match_parent"
+        android:background="#3F51B5" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:name="com.jyheo.fragmentexample.DetailsFragment"
         android:id="@+id/details"
         android:layout_weight="2"
-        android:layout_width="0px"
+        android:layout_width="0dp"
         android:layout_height="match_parent" />
 
 </LinearLayout>
