@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.jyheo.fragmentexample.databinding.FragmentDetailsBinding;
@@ -30,12 +29,9 @@ public class DetailsFragment extends Fragment {
     public void onStart() {
         super.onStart();
         MyViewModel model = new ViewModelProvider(requireActivity()).get(MyViewModel.class);
-        model.getSelected().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer idx) {
-                if (idx >= 0)
-                    binding.textview.setText(Shakespeare.DIALOGUE[idx]);
-            }
+        model.getSelected().observe(this, idx -> {
+            if (idx >= 0)
+                binding.textview.setText(Shakespeare.DIALOGUE[idx]);
         });
     }
 }

@@ -33,12 +33,7 @@ public class TitlesFragment extends Fragment {
 
         binding.listview.setAdapter(new ArrayAdapter<>(requireContext(),
                 android.R.layout.simple_list_item_activated_1, Shakespeare.TITLES));
-        binding.listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                model.select(i);
-            }
-        });
+        binding.listview.setOnItemClickListener((adapterView, view, i, l) -> model.select(i));
         binding.listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         return binding.getRoot();
