@@ -1,13 +1,10 @@
 package com.jyheo.fragmentbasic;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
-
-import com.jyheo.fragmentbasic.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,20 +21,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void switchFragment() {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment, new SecondFragment());
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment, new SecondFragment())
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.frag_switch:
-                switchFragment();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.frag_switch) {
+            switchFragment();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 }
