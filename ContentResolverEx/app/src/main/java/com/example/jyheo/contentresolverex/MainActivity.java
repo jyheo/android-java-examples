@@ -4,50 +4,71 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.provider.CallLog;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.cursoradapter.widget.SimpleCursorAdapter;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
-import java.util.ArrayList;
+import com.example.jyheo.contentresolverex.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
     final int REQUEST_CODE_PERM_READ_CALL_LOG = 1;
+    ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALL_LOG) == PackageManager.PERMISSION_GRANTED) {
-            updateCallLog();
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_CALL_LOG}, REQUEST_CODE_PERM_READ_CALL_LOG);
-        }
-
+        binding.button.setOnClickListener(v -> updateCallLog());
     }
 
     private void updateCallLog() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALL_LOG)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_CALL_LOG}, REQUEST_CODE_PERM_READ_CALL_LOG);
             return;
-        Cursor cursor = getContentResolver().query(CallLog.Calls.CONTENT_URI, new String[]{CallLog.Calls.NUMBER}, null, null, null);
-        int number_index = cursor.getColumnIndex(CallLog.Calls.NUMBER);
-        ArrayList<String> call_list = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            String num = cursor.getString(number_index);
-            call_list.add(num);
         }
-        cursor.close();
 
-        ListView lv = (ListView)findViewById(R.id.calllog);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
-                call_list);
-        lv.setAdapter(adapter);
+        Cursor cursor = getContentResolver().query(CallLog.Calls.CONTENT_URI,
+                new String[]{CallLog.Calls._ID, CallLog.Calls.NUMBER},  // _ID is required for cursoradapter
+                null, null, null);
+        binding.calllog.setAdapter(new SimpleCursorAdapter(this,
+                android.R.layout.simple_list_item_1, cursor,
+                new String[]{CallLog.Calls.NUMBER}, new int[]{android.R.id.text1}, 0));
+
+        /* // by CursorLoader
+         LoaderManager.getInstance(this).initLoader(0, null, new LoaderManager.LoaderCallbacks<Cursor>() {
+            @NonNull
+            @Override
+            public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+                return new CursorLoader(MainActivity.this, CallLog.Calls.CONTENT_URI,
+                        new String[]{CallLog.Calls._ID, CallLog.Calls.NUMBER},
+                        null, null, null);
+            }
+
+            @Override
+            public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+                binding.calllog.setAdapter(new SimpleCursorAdapter(MainActivity.this,
+                        android.R.layout.simple_list_item_1, data,
+                        new String[]{CallLog.Calls.NUMBER}, new int[]{android.R.id.text1}, 0));
+            }
+
+            @Override
+            public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+                binding.calllog.setAdapter(null);
+            }
+        });*/
+
     }
 
     @Override
@@ -58,6 +79,12 @@ public class MainActivity extends AppCompatActivity {
                 updateCallLog();
             } else {
                 // permission for READ_CALL_LOG rejected!
+                new AlertDialog.Builder(this).setTitle("Permission!")
+                        .setMessage("READ_CALL_LOG permission is required to list the call log.\nPress OK to grant the permission.")
+                        .setPositiveButton("OK", ((dialog, which) -> ActivityCompat.requestPermissions(this,
+                                new String[]{Manifest.permission.READ_CALL_LOG}, REQUEST_CODE_PERM_READ_CALL_LOG)))
+                        .setNegativeButton("Cancel", null)
+                        .create().show();
             }
         }
     }
