@@ -3,6 +3,8 @@ package com.example.fileexample;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Environment;
+import android.widget.Toast;
 
 import com.example.fileexample.databinding.ActivityMainBinding;
 
@@ -25,8 +27,15 @@ public class MainActivity extends AppCompatActivity {
         binding.btnReadIn.setOnClickListener(v -> readData(new File(getFilesDir(), filename)));
         binding.btnWriteIn.setOnClickListener(v -> writeData(new File(getFilesDir(), filename)));
 
-        binding.btnReadExt.setOnClickListener(v -> readData(new File(getExternalFilesDir(null), filename)));
-        binding.btnWriteExt.setOnClickListener(v -> writeData(new File(getExternalFilesDir(null), filename)));
+        if (isExternalStorageMounted()) {
+            binding.btnReadExt.setOnClickListener(v -> readData(new File(getExternalFilesDir(null), filename)));
+            binding.btnWriteExt.setOnClickListener(v -> writeData(new File(getExternalFilesDir(null), filename)));
+        } else {
+            binding.btnReadExt.setOnClickListener(v ->
+                    Toast.makeText(this, "External Stroage is not mounted.", Toast.LENGTH_LONG).show());
+            binding.btnWriteExt.setOnClickListener(v ->
+                    Toast.makeText(this, "External Stroage is not mounted.", Toast.LENGTH_LONG).show());
+        }
     }
 
     void readData(File file) {
@@ -50,5 +59,10 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isExternalStorageMounted() {
+        String state = Environment.getExternalStorageState();
+        return Environment.MEDIA_MOUNTED.equals(state);
     }
 }
