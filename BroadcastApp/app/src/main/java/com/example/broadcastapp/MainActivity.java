@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         /*
         mReceiver.setOnSmsReceived(m -> binding.textview.setText(m));
 
-        mReceiver.setOnSmsReceived(new SmsReceiver.OnSmsReceived() {
+        mReceiver.setOnSmsReceived(new MySMSReceiver.OnSmsReceived() {
             @Override
             public void onReceived(String msg) {
                 binding.textview.setText(msg);
