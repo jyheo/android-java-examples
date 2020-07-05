@@ -23,6 +23,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.firebase.storage.FirebaseStorage;
@@ -62,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
         displayImage();
 
         addReadEventListener();
+
+        FCMToken();
     }
 
     private void displayImage() {
@@ -135,6 +139,27 @@ public class MainActivity extends AppCompatActivity {
                 // Failed to read value
                 Log.w(TAG, "Failed to read value.", error.toException());
                 Toast.makeText(getApplicationContext(), "Failed to read value.", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void FCMToken() {
+        FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+            @Override
+            public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                if (!task.isSuccessful()) {
+                    Log.w(TAG, "getInstanceId failed", task.getException());
+                    return;
+                }
+
+                // Get new Instance ID token
+                String token = task.getResult().getToken();
+
+                // Log and toast
+                String msg = "FCM token:" + token;
+                binding.tvToken.setText(msg);
+                Log.d(TAG, msg);
+                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
             }
         });
     }
